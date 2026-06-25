@@ -1,0 +1,19 @@
+{
+  "rentIncome": 80000000,
+  "parkingIncome": 5000000,
+  "otherIncome": 1000000,
+  "managementCost": 8000000,
+  "repairCost": 6000000,
+  "propertyTax": 7000000,
+  "insuranceCost": 2000000,
+  "otherExpense": 4000000,
+  "interestExpense": 6000000,
+  "depreciation": 12000000,
+  "incomeTax": 5000000,
+  "currentLoan": 350000000,
+  "principalRepayment": 18000000,
+  "unpaidRepayment": 0,
+  "repairReserve": 10000000,
+  "cashCurrent": 30000000,
+  "cashPrevious": 28000000
+}

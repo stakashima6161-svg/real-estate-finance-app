@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>不動産オーナー財務みえる化アプリ</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="app-header">
+    <div>
+      <p class="eyebrow">Real Estate Owner Finance App</p>
+      <h1>不動産オーナー財務みえる化アプリ</h1>
+      <p class="lead">
+        決算書の大きな数字から、利益・手残り・借入の安全性を見える化し、
+        「攻めるべきか、守るべきか」を考えるための簡易ツールです。
+      </p>
+    </div>
+    <div class="header-actions">
+      <button id="loadSampleBtn" class="secondary">サンプル入力</button>
+      <button id="resetBtn" class="ghost">入力を消す</button>
+    </div>
+  </header>
+
+  <main class="app">
+    <section class="notice">
+      <strong>利用上の注意</strong>
+      <span>このアプリは経営判断の入口として使う簡易ツールです。税務申告、融資審査、鑑定評価を目的としたものではありません。関与先名・物件名などの個人情報は入力しない運用を前提にしています。</span>
+    </section>
+
+    <nav class="tabs" aria-label="画面切替">
+      <button class="tab active" data-tab="input">1. 決算書の数字を入れる</button>
+      <button class="tab" data-tab="cashflow">2. お金の残り方を見る</button>
+      <button class="tab" data-tab="debt">3. 借入の安全性を見る</button>
+      <button class="tab" data-tab="property">4. 物件ごとに見る</button>
+      <button class="tab" data-tab="report">5. 結果を印刷する</button>
+      <button class="tab" data-tab="checklist">6. 次に見る資料</button>
+    </nav>
+
+    <section id="input" class="tab-panel active">
+      <div class="section-title">
+        <h2>決算書の大きな数字を入力</h2>
+        <p>細かい科目に分けすぎず、不動産オーナーが理解しやすい大きな項目で入力します。</p>
+      </div>
+
+      <div class="grid two">
+        <div class="card">
+          <h3>収入</h3>
+          <label>年間家賃収入 <input type="number" id="rentIncome" min="0" step="10000" placeholder="例：80000000"></label>
+          <label>駐車場収入 <input type="number" id="parkingIncome" min="0" step="10000" placeholder="例：5000000"></label>
+          <label>その他収入 <input type="number" id="otherIncome" min="0" step="10000" placeholder="例：1000000"></label>
+        </div>
+
+        <div class="card">
+          <h3>経費・税金</h3>
+          <label>管理費 <input type="number" id="managementCost" min="0" step="10000" placeholder="例：8000000"></label>
+          <label>修繕費 <input type="number" id="repairCost" min="0" step="10000" placeholder="例：6000000"></label>
+          <label>固定資産税・都市計画税 <input type="number" id="propertyTax" min="0" step="10000" placeholder="例：7000000"></label>
+          <label>保険料 <input type="number" id="insuranceCost" min="0" step="10000" placeholder="例：2000000"></label>
+          <label>その他経費 <input type="number" id="otherExpense" min="0" step="10000" placeholder="例：4000000"></label>
+          <label>支払利息 <input type="number" id="interestExpense" min="0" step="10000" placeholder="例：6000000"></label>
+          <label>減価償却費 <input type="number" id="depreciation" min="0" step="10000" placeholder="例：12000000"></label>
+          <label>法人税等・所得税等 <input type="number" id="incomeTax" min="0" step="10000" placeholder="例：5000000"></label>
+        </div>
+
+        <div class="card">
+          <h3>借入・返済</h3>
+          <label>現在の借入金残高 <input type="number" id="currentLoan" min="0" step="10000" placeholder="例：350000000"></label>
+          <label>年間元金返済額 <input type="number" id="principalRepayment" min="0" step="10000" placeholder="例：18000000"></label>
+          <label>未払金・長期未払金の年間返済額 <input type="number" id="unpaidRepayment" min="0" step="10000" placeholder="例：0"></label>
+          <label>将来修繕の年間積立目安 <input type="number" id="repairReserve" min="0" step="10000" placeholder="例：10000000"></label>
+        </div>
+
+        <div class="card">
+          <h3>貸借対照表の確認</h3>
+          <label>当年の現預金 <input type="number" id="cashCurrent" min="0" step="10000" placeholder="例：30000000"></label>
+          <label>前年の現預金 <input type="number" id="cashPrevious" min="0" step="10000" placeholder="例：28000000"></label>
+          <label>当期利益が分かる場合（任意） <input type="number" id="netProfitOverride" step="10000" placeholder="未入力なら自動計算"></label>
+          <p class="hint">当期利益を入力した場合は、キャッシュフロー計算でその金額を優先します。</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="cashflow" class="tab-panel">
+      <div class="section-title">
+        <h2>利益とお金の残り方</h2>
+        <p>利益が出ていても、借入返済や修繕への備えを考えると手残りが少ない場合があります。</p>
+      </div>
+
+      <div class="kpi-grid">
+        <div class="kpi"><span>年間収入</span><strong id="kpiRevenue">0円</strong></div>
+        <div class="kpi"><span>決算書上の利益</span><strong id="kpiProfit">0円</strong></div>
+        <div class="kpi"><span>概算キャッシュフロー</span><strong id="kpiCF">0円</strong></div>
+        <div class="kpi"><span>修繕積立後の手残り</span><strong id="kpiAfterReserve">0円</strong></div>
+      </div>
+
+      <div class="grid two">
+        <div class="card">
+          <h3>概算キャッシュフロー</h3>
+          <div class="calc-line"><span>当期利益</span><strong id="cfProfit">0円</strong></div>
+          <div class="calc-line plus"><span>＋ 減価償却費</span><strong id="cfDep">0円</strong></div>
+          <div class="calc-line minus"><span>－ 借入元金返済</span><strong id="cfPrincipal">0円</strong></div>
+          <div class="calc-line minus"><span>－ 未払金等返済</span><strong id="cfUnpaid">0円</strong></div>
+          <div class="calc-line total"><span>概算キャッシュフロー</span><strong id="cfTotal">0円</strong></div>
+          <div class="calc-line minus"><span>－ 将来修繕の積立目安</span><strong id="cfReserve">0円</strong></div>
+          <div class="calc-line total strong"><span>修繕積立後の手残り</span><strong id="cfAfterReserve">0円</strong></div>
+        </div>
+
+        <div class="card diagnosis">
+          <h3>診断コメント</h3>
+          <div id="cashflowStatus" class="status">入力してください</div>
+          <p id="cashflowComment">決算書の数字を入力すると、ここにコメントが表示されます。</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="debt" class="tab-panel">
+      <div class="section-title">
+        <h2>借入の安全性を見る</h2>
+        <p>難しい財務指標ではなく、3つの質問で「攻める余力があるか、守るべきか」を確認します。</p>
+      </div>
+
+      <div class="question-grid">
+        <div class="card question">
+          <span class="number">1</span>
+          <h3>家賃収入に対して、借入は重すぎないか？</h3>
+          <p>目安：借入金は年間賃貸収益の5倍以内</p>
+          <strong id="debtRevenueRatio">-</strong>
+          <small id="debtRevenueResult">入力してください</small>
+        </div>
+        <div class="card question">
+          <span class="number">2</span>
+          <h3>借入に見合う利益が出ているか？</h3>
+          <p>目安：営業利益は借入金の10%以上</p>
+          <strong id="debtProfitRatio">-</strong>
+          <small id="debtProfitResult">入力してください</small>
+        </div>
+        <div class="card question">
+          <span class="number">3</span>
+          <h3>今の手残りで、何年あれば借入を返せるか？</h3>
+          <p>目安：返済原資CFで15年以内</p>
+          <strong id="debtYears">-</strong>
+          <small id="debtYearsResult">入力してください</small>
+        </div>
+      </div>
+
+      <div class="grid two">
+        <div class="card">
+          <h3>借入目標の目安</h3>
+          <table class="result-table">
+            <thead><tr><th>区分</th><th>目安金額</th><th>現在借入との差額</th></tr></thead>
+            <tbody>
+              <tr><td>守りの目安</td><td id="defensiveTarget">0円</td><td id="defensiveGap">0円</td></tr>
+              <tr><td>標準の目安</td><td id="standardTarget">0円</td><td id="standardGap">0円</td></tr>
+              <tr><td>攻めの上限</td><td id="aggressiveTarget">0円</td><td id="aggressiveGap">0円</td></tr>
+            </tbody>
+          </table>
+          <p class="hint">3つの基準で計算した借入上限のうち、一番低い金額を「攻めの上限」としています。</p>
+        </div>
+
+        <div class="card diagnosis">
+          <h3>攻め・守り判定</h3>
+          <div id="debtStatus" class="status">入力してください</div>
+          <p id="debtComment">決算書と借入の数字を入力すると、ここにコメントが表示されます。</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="property" class="tab-panel">
+      <div class="section-title">
+        <h2>物件ごとに見る</h2>
+        <p>全体で気になる数字が出たら、次に物件別へ分けて原因を確認します。実名ではなく「物件A」などで入力してください。</p>
+      </div>
+
+      <div class="table-wrap">
+        <table class="input-table" id="propertyTable">
+          <thead>
+            <tr>
+              <th>項目</th>
+              <th>物件A</th>
+              <th>物件B</th>
+              <th>物件C</th>
+              <th>物件D</th>
+              <th>物件E</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr data-field="income"><th>年間収入</th><td><input type="number" step="10000"></td><td><input type="number" step="10000"></td><td><input type="number" step="10000"></td><td><input type="number" step="10000"></td><td><input type="number" step="10000"></td></tr>
+            <tr data-field="expense"><th>年間経費</th><td><input type="number" step="10000"></td><td><input type="number" step="10000"></td><td><input type="number" step="10000"></td><td><input type="number" step="10000"></td><td><input type="number" step="10000"></td></tr>
+            <tr data-field="interest"><th>支払利息</th><td><input type="number" step="10000"></td><td><input type="number" step="10000"></td><td><input type="number" step="10000"></td><td><input type="number" step="10000"></td><td><input type="number" step="10000"></td></tr>
+            <tr data-field="depreciation"><th>減価償却費</th><td><input type="number" step="10000"></td><td><input type="number" step="10000"></td><td><input type="number" step="10000"></td><td><input type="number" step="10000"></td><td><input type="number" step="10000"></td></tr>
+            <tr data-field="principal"><th>年間元金返済</th><td><input type="number" step="10000"></td><td><input type="number" step="10000"></td><td><input type="number" step="10000"></td><td><input type="number" step="10000"></td><td><input type="number" step="10000"></td></tr>
+            <tr data-field="reserve"><th>修繕積立目安</th><td><input type="number" step="10000"></td><td><input type="number" step="10000"></td><td><input type="number" step="10000"></td><td><input type="number" step="10000"></td><td><input type="number" step="10000"></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <h3>物件別の手残り</h3>
+        <div id="propertyResults" class="property-results"></div>
+      </div>
+    </section>
+
+    <section id="report" class="tab-panel">
+      <div class="section-title no-print">
+        <h2>結果を印刷する</h2>
+        <p>A4一枚の面談用レポートとして印刷できます。</p>
+        <button id="printBtn" class="primary">印刷する</button>
+      </div>
+
+      <article class="report-sheet" id="reportSheet">
+        <h2>不動産オーナー財務みえる化レポート</h2>
+        <p class="report-note">このレポートは、決算書の大きな数字から利益・手残り・借入の安全性を確認するための簡易診断です。</p>
+
+        <div class="report-grid">
+          <div><span>年間収入</span><strong id="reportRevenue">0円</strong></div>
+          <div><span>決算書上の利益</span><strong id="reportProfit">0円</strong></div>
+          <div><span>概算CF</span><strong id="reportCF">0円</strong></div>
+          <div><span>修繕積立後CF</span><strong id="reportAfterReserve">0円</strong></div>
+        </div>
+
+        <h3>1. お金の残り方</h3>
+        <p id="reportCashflowText">入力してください。</p>
+
+        <h3>2. 借入の安全性</h3>
+        <p id="reportDebtText">入力してください。</p>
+
+        <h3>3. 次に確認したい資料</h3>
+        <ul id="reportChecklist">
+          <li>家賃明細、入居一覧、募集条件</li>
+          <li>借入返済予定表、金銭消費貸借契約書</li>
+          <li>固定資産税納税通知書</li>
+          <li>火災保険・地震保険の証券</li>
+          <li>修繕の見積書、請求書、修繕履歴</li>
+        </ul>
+
+        <p class="footer-note">※関与先名・物件名などの個人情報は記載しない運用を想定しています。</p>
+      </article>
+    </section>
+
+    <section id="checklist" class="tab-panel">
+      <div class="section-title">
+        <h2>次に見る資料</h2>
+        <p>会計数字で違和感が出たら、数字だけで結論を出さず、資料で原因を確認します。</p>
+      </div>
+
+      <div class="card">
+        <table class="result-table">
+          <thead><tr><th>気になる数字</th><th>確認する資料</th><th>見るポイント</th></tr></thead>
+          <tbody>
+            <tr><td>家賃収入が減っている</td><td>家賃明細、入居一覧、募集条件</td><td>空室か、家賃下落か、募集条件か</td></tr>
+            <tr><td>修繕費が多い</td><td>請求書、見積書、修繕履歴</td><td>必要投資か、応急処置か、先送り負担か</td></tr>
+            <tr><td>固定資産税が重い</td><td>固定資産税納税通知書</td><td>土地・建物のどちらが増えたか</td></tr>
+            <tr><td>保険料が高い</td><td>火災保険証券、地震保険証券</td><td>補償内容、免責、家賃補償、水災の有無</td></tr>
+            <tr><td>借入返済が重い</td><td>返済予定表、金銭消費貸借契約書</td><td>元金返済、金利、返済期間、借換余地</td></tr>
+            <tr><td>預金が増えていない</td><td>役員貸付金、事業主貸、設備投資資料</td><td>事業外流出、生活費、投資支出の有無</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
