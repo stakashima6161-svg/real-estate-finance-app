@@ -46,36 +46,36 @@
       <div class="grid two">
         <div class="card">
           <h3>収入</h3>
-          <label>年間家賃収入 <input type="number" id="rentIncome" min="0" step="10000" placeholder="例：80000000"></label>
-          <label>駐車場収入 <input type="number" id="parkingIncome" min="0" step="10000" placeholder="例：5000000"></label>
-          <label>その他収入 <input type="number" id="otherIncome" min="0" step="10000" placeholder="例：1000000"></label>
+          <label>年間家賃収入 <input type="text" inputmode="numeric" id="rentIncome" placeholder="例：80,000,000"></label>
+          <label>駐車場収入 <input type="text" inputmode="numeric" id="parkingIncome" placeholder="例：5,000,000"></label>
+          <label>その他収入 <input type="text" inputmode="numeric" id="otherIncome" placeholder="例：1,000,000"></label>
         </div>
 
         <div class="card">
           <h3>経費・税金</h3>
-          <label>管理費 <input type="number" id="managementCost" min="0" step="10000" placeholder="例：8000000"></label>
-          <label>修繕費 <input type="number" id="repairCost" min="0" step="10000" placeholder="例：6000000"></label>
-          <label>固定資産税・都市計画税 <input type="number" id="propertyTax" min="0" step="10000" placeholder="例：7000000"></label>
-          <label>保険料 <input type="number" id="insuranceCost" min="0" step="10000" placeholder="例：2000000"></label>
-          <label>その他経費 <input type="number" id="otherExpense" min="0" step="10000" placeholder="例：4000000"></label>
-          <label>支払利息 <input type="number" id="interestExpense" min="0" step="10000" placeholder="例：6000000"></label>
-          <label>減価償却費 <input type="number" id="depreciation" min="0" step="10000" placeholder="例：12000000"></label>
-          <label>法人税等・所得税等 <input type="number" id="incomeTax" min="0" step="10000" placeholder="例：5000000"></label>
+          <label>管理費 <input type="text" inputmode="numeric" id="managementCost" placeholder="例：8,000,000"></label>
+          <label>修繕費 <input type="text" inputmode="numeric" id="repairCost" placeholder="例：6,000,000"></label>
+          <label>固定資産税・都市計画税 <input type="text" inputmode="numeric" id="propertyTax" placeholder="例：7,000,000"></label>
+          <label>保険料 <input type="text" inputmode="numeric" id="insuranceCost" placeholder="例：2,000,000"></label>
+          <label>その他経費 <input type="text" inputmode="numeric" id="otherExpense" placeholder="例：4,000,000"></label>
+          <label>支払利息 <input type="text" inputmode="numeric" id="interestExpense" placeholder="例：6,000,000"></label>
+          <label>減価償却費 <input type="text" inputmode="numeric" id="depreciation" placeholder="例：12,000,000"></label>
+          <label>法人税等・所得税等 <input type="text" inputmode="numeric" id="incomeTax" placeholder="例：5,000,000"></label>
         </div>
 
         <div class="card">
           <h3>借入・返済</h3>
-          <label>現在の借入金残高 <input type="number" id="currentLoan" min="0" step="10000" placeholder="例：350000000"></label>
-          <label>年間元金返済額 <input type="number" id="principalRepayment" min="0" step="10000" placeholder="例：18000000"></label>
-          <label>未払金・長期未払金の年間返済額 <input type="number" id="unpaidRepayment" min="0" step="10000" placeholder="例：0"></label>
-          <label>将来修繕の年間積立目安 <input type="number" id="repairReserve" min="0" step="10000" placeholder="例：10000000"></label>
+          <label>現在の借入金残高 <input type="text" inputmode="numeric" id="currentLoan" placeholder="例：350,000,000"></label>
+          <label>年間元金返済額 <input type="text" inputmode="numeric" id="principalRepayment" placeholder="例：18,000,000"></label>
+          <label>未払金・長期未払金の年間返済額 <input type="text" inputmode="numeric" id="unpaidRepayment" placeholder="例：0"></label>
+          <label>将来修繕の年間積立目安 <input type="text" inputmode="numeric" id="repairReserve" placeholder="例：10,000,000"></label>
         </div>
 
         <div class="card">
           <h3>貸借対照表の確認</h3>
-          <label>当年の現預金 <input type="number" id="cashCurrent" min="0" step="10000" placeholder="例：30000000"></label>
-          <label>前年の現預金 <input type="number" id="cashPrevious" min="0" step="10000" placeholder="例：28000000"></label>
-          <label>当期利益が分かる場合（任意） <input type="number" id="netProfitOverride" step="10000" placeholder="未入力なら自動計算"></label>
+          <label>当年の現預金 <input type="text" inputmode="numeric" id="cashCurrent" placeholder="例：30,000,000"></label>
+          <label>前年の現預金 <input type="text" inputmode="numeric" id="cashPrevious" placeholder="例：28,000,000"></label>
+          <label>当期利益が分かる場合（任意） <input type="text" inputmode="numeric" id="netProfitOverride" placeholder="未入力なら自動計算"></label>
           <p class="hint">当期利益を入力した場合は、キャッシュフロー計算でその金額を優先します。</p>
         </div>
       </div>
@@ -185,12 +185,12 @@
             </tr>
           </thead>
           <tbody>
-            <tr data-field="income"><th>年間収入</th><td><input type="number" step="10000"></td><td><input type="number" step="10000"></td><td><input type="number" step="10000"></td><td><input type="number" step="10000"></td><td><input type="number" step="10000"></td></tr>
-            <tr data-field="expense"><th>年間経費</th><td><input type="number" step="10000"></td><td><input type="number" step="10000"></td><td><input type="number" step="10000"></td><td><input type="number" step="10000"></td><td><input type="number" step="10000"></td></tr>
-            <tr data-field="interest"><th>支払利息</th><td><input type="number" step="10000"></td><td><input type="number" step="10000"></td><td><input type="number" step="10000"></td><td><input type="number" step="10000"></td><td><input type="number" step="10000"></td></tr>
-            <tr data-field="depreciation"><th>減価償却費</th><td><input type="number" step="10000"></td><td><input type="number" step="10000"></td><td><input type="number" step="10000"></td><td><input type="number" step="10000"></td><td><input type="number" step="10000"></td></tr>
-            <tr data-field="principal"><th>年間元金返済</th><td><input type="number" step="10000"></td><td><input type="number" step="10000"></td><td><input type="number" step="10000"></td><td><input type="number" step="10000"></td><td><input type="number" step="10000"></td></tr>
-            <tr data-field="reserve"><th>修繕積立目安</th><td><input type="number" step="10000"></td><td><input type="number" step="10000"></td><td><input type="number" step="10000"></td><td><input type="number" step="10000"></td><td><input type="number" step="10000"></td></tr>
+            <tr data-field="income"><th>年間収入</th><td><input type="text" inputmode="numeric"></td><td><input type="text" inputmode="numeric"></td><td><input type="text" inputmode="numeric"></td><td><input type="text" inputmode="numeric"></td><td><input type="text" inputmode="numeric"></td></tr>
+            <tr data-field="expense"><th>年間経費</th><td><input type="text" inputmode="numeric"></td><td><input type="text" inputmode="numeric"></td><td><input type="text" inputmode="numeric"></td><td><input type="text" inputmode="numeric"></td><td><input type="text" inputmode="numeric"></td></tr>
+            <tr data-field="interest"><th>支払利息</th><td><input type="text" inputmode="numeric"></td><td><input type="text" inputmode="numeric"></td><td><input type="text" inputmode="numeric"></td><td><input type="text" inputmode="numeric"></td><td><input type="text" inputmode="numeric"></td></tr>
+            <tr data-field="depreciation"><th>減価償却費</th><td><input type="text" inputmode="numeric"></td><td><input type="text" inputmode="numeric"></td><td><input type="text" inputmode="numeric"></td><td><input type="text" inputmode="numeric"></td><td><input type="text" inputmode="numeric"></td></tr>
+            <tr data-field="principal"><th>年間元金返済</th><td><input type="text" inputmode="numeric"></td><td><input type="text" inputmode="numeric"></td><td><input type="text" inputmode="numeric"></td><td><input type="text" inputmode="numeric"></td><td><input type="text" inputmode="numeric"></td></tr>
+            <tr data-field="reserve"><th>修繕積立目安</th><td><input type="text" inputmode="numeric"></td><td><input type="text" inputmode="numeric"></td><td><input type="text" inputmode="numeric"></td><td><input type="text" inputmode="numeric"></td><td><input type="text" inputmode="numeric"></td></tr>
           </tbody>
         </table>
       </div>

@@ -46,10 +46,22 @@ function years(value) {
 function val(id) {
   const el = document.getElementById(id);
   if (!el) return 0;
-  const raw = el.value;
+  const raw = el.value.replace(/,/g, '');
   if (raw === "" || raw === null) return 0;
   const n = Number(raw);
   return Number.isFinite(n) ? n : 0;
+}
+
+function applyCommaFormat(input) {
+  const raw = input.value.replace(/,/g, '').replace(/[^0-9-]/g, '');
+  if (raw === '' || raw === '-') {
+    input.value = raw;
+    return;
+  }
+  const n = Number(raw);
+  if (Number.isFinite(n)) {
+    input.value = n.toLocaleString('ja-JP');
+  }
 }
 
 function setText(id, text) {
@@ -228,7 +240,7 @@ function updatePropertyResults() {
     const row = table.querySelector(`tr[data-field="${field}"]`);
     if (!row) return;
     row.querySelectorAll("td input").forEach((input, index) => {
-      data[index][field] = Number(input.value || 0);
+      data[index][field] = Number((input.value || '0').replace(/,/g, ''));
     });
   });
 
@@ -319,7 +331,7 @@ function initTabs() {
 function loadSample() {
   Object.entries(sample).forEach(([id, value]) => {
     const el = document.getElementById(id);
-    if (el) el.value = value;
+    if (el) el.value = value !== "" ? Number(value).toLocaleString('ja-JP') : "";
   });
 
   const table = document.getElementById("propertyTable");
@@ -335,7 +347,8 @@ function loadSample() {
   Object.entries(propertySample).forEach(([field, values]) => {
     const row = table.querySelector(`tr[data-field="${field}"]`);
     row.querySelectorAll("td input").forEach((input, index) => {
-      input.value = values[index] || "";
+      const v = values[index];
+      input.value = (v != null && v !== "") ? Number(v).toLocaleString('ja-JP') : "";
     });
   });
 
@@ -355,9 +368,11 @@ document.addEventListener("DOMContentLoaded", () => {
   initTabs();
   ids.forEach(id => {
     const el = document.getElementById(id);
-    if (el) el.addEventListener("input", update);
+    if (el) el.addEventListener("input", () => { applyCommaFormat(el); update(); });
   });
-  document.querySelectorAll("#propertyTable input").forEach(input => input.addEventListener("input", update));
+  document.querySelectorAll("#propertyTable input").forEach(input => {
+    input.addEventListener("input", () => { applyCommaFormat(input); update(); });
+  });
   document.getElementById("loadSampleBtn").addEventListener("click", loadSample);
   document.getElementById("resetBtn").addEventListener("click", resetAll);
   document.getElementById("printBtn").addEventListener("click", () => window.print());
